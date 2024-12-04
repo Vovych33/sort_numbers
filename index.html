@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Текстовый калькулятор</title>
+    <style>
+        .calc {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .textareafont {
+            font-family: Arial, sans-serif;
+        }
+        select, input[type="checkbox"] {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<form name="form" class="calc">
+    <table style="width:100%;">
+        <tbody>
+            <tr>
+                <td>
+                    <textarea id="value1" cols="50" rows="10" class="textareafont" style="width:100%" placeholder="Исходный текст" oninput="processText()"></textarea>
+                </td>
+            </tr>
+            <tr align="center">
+                <td colspan="2">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td align="right" style="padding-right:20px">
+                                    Разделитель введенного текста
+                                    <select id="value3" onchange="processText()">
+                                        <option value=" " selected>Пробел</option>
+                                        <option value="\n">Новая строка</option>
+                                        <option value=",">Запятая</option>    
+                                        <option value=".">Точка</option>
+                                        <option value=";">Точка с запятой</option>                                                                            
+                                    </select>
+                                </td>
+                                <td>
+                                    Сортировка
+                                    <select id="value5" onchange="processText()">
+                                        <option value="1" selected>По возрастанию</option>
+                                        <option value="2">По убыванию</option>
+                                        <option value="3">По количеству символов</option>                                                                         
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right" style="padding-right:20px">
+                                    Разделитель итогового текста
+                                    <select id="value4" onchange="processText()">
+                                        <option value=" " selected>Пробел</option>
+                                        <option value="\n">Новая строка</option>
+                                        <option value=",">Запятая</option>    
+                                        <option value=".">Точка</option>
+                                        <option value=";">Точка с запятой</option>                                                                        
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="checkbox" id="value6" onchange="processText()"> <label for="value6">Удалить дубли</label> 
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>    
+            <tr>
+                <td>
+                    <textarea id="value2" cols="50" rows="10" class="textareafont" style="width:100%" placeholder="Результат" readonly></textarea>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+<script>
+    function processText() {
+        const inputText = document.getElementById('value1').value;
+        const delimiterInput = document.getElementById('value3').value;
+        const delimiterOutput = document.getElementById('value4').value;
+        const removeDuplicates = document.getElementById('value6').checked;
+        const sortOption = document.getElementById('value5').value;
+
+        // Определяем разделители
+        const inputDelimiter = delimiterInput === "\\n" ? "\n" : delimiterInput;
+        const outputDelimiter = delimiterOutput === "\\n" ? "\n" : delimiterOutput;
+
+        // Разделение текста
+        let items = inputText.split(inputDelimiter).map(item => item.trim()).filter(item => item.length > 0);
+
+        // Удаление дубликатов
+        if (removeDuplicates) {
+            items = [...new Set(items)];
+        }
+
+        // Сортировка
+        switch (sortOption) {
+            case "1": // По возрастанию
+                items.sort((a, b) => Number(a) - Number(b));
+                break;
+            case "2": // По убыванию
+                items.sort((a, b) => Number(b) - Number(a));
+                break;
+            case "3": // По количеству символов
+                items.sort((a, b) => a.length - b.length);
+                break;
+        }
+
+        // Объединение результата
+        const result = items.join(outputDelimiter);
+        document.getElementById('value2').value = result;
+    }
+</script>
+
+</body>
+</html>
