@@ -60,7 +60,7 @@
 
 <h1>Сортировка чисел</h1>
 <form name="form" class="calc">
-    <textarea id="value1" cols="50" rows="3" class="textareafont" placeholder="Исходный текст" oninput="processText()"></textarea>
+    <textarea id="value1" cols="50" rows="5" class="textareafont" placeholder="Исходный текст" oninput="processText()"></textarea>
     
     <div>
         <label for="value3">Разделитель введенного текста:</label>
@@ -98,14 +98,14 @@
         <label for="value6">Удалить дубли</label> 
     </div>
 
-    <textarea id="value2" cols="50" rows="3" class="textareafont" placeholder="Результат" readonly></textarea>
+    <textarea id="value2" cols="50" rows="5" class="textareafont" placeholder="Результат" readonly></textarea>
 </form>
 
 <script>
     function processText() {
         const inputText = document.getElementById("value1").value;
-        const separatorInput = document.getElementById("value3").value;
-        const separatorOutput = document.getElementById("value4").value;
+        const separatorInput = document.getElementById("value3").value.replace('.', '\\.'); // Экранируем точку
+        const separatorOutput = document.getElementById("value4").value === "\\n" ? "\n" : document.getElementById("value4").value; // Обработка новой строки
         const sortOption = document.getElementById("value5").value;
         const removeDuplicates = document.getElementById("value6").checked;
 
